@@ -21,7 +21,7 @@
                         <a href="{{ route('menus.create') }}" class="btn btn-md btn-success mb-3">TAMBAH MENU</a>
                         <table class="table table-bordered">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th scope="col">Gambar</th>
                                     <th scope="col">Nama Menu</th>
                                     <th scope="col">Deskripsi</th>
@@ -32,7 +32,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($menus as $menu)
-                                    <tr>
+                                    <tr class="text-center">
                                         <td class="text-center">
                                             <img src="{{ asset('/storage/menus/'.$menu->gambar_menu) }}" class="rounded" style="width: 150px">
                                         </td>
