@@ -17,9 +17,8 @@
             max-width: 250px;
             background: #ffffff; /* Dark brown color */
             color: black;
-            min-height: 150%;
+            height: 100vh;
             padding: 20px;
-            position: relative;
         }
         .sidebar h2 {
             margin-bottom: 50px; /* Menambahkan jarak bawah */
@@ -49,7 +48,7 @@
         }
         .navbar {
             background: #3C3D37; /* Navbar color */
-            width: 101.7%;
+            width: 100%;
             padding: 25px;
             color: white;
             margin: 0;
@@ -79,24 +78,13 @@
         table th {
             background-color: #e0e0e0; /* Table header color */
         }
-        .table thead th {
-            background-color: #d9d9d9;
-        }
-        .btn-edit {
-            background-color: #6d4c41;
-            color: white;
-        }
-        .btn-hapus {
-            background-color: #8d6e63;
-            color: white;
-        }
     </style>
 </head>
 <body>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h2>KIRANA COFFE</h2>
+    <h2>KIRANA COFFE</h2>
         <a href="#"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="#"><i class="fas fa-truck"></i> Delivery Order</a>
@@ -125,78 +113,77 @@
         </nav>
 
         <!-- Data Menu Table -->
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div>
-                        <h3 class="text-center my-4">Data Menu</h3>
-                        <hr>
-                    </div>
-                    <div class="card border-0 shadow-sm rounded">
-                        <div class="card-body">
-                            <a href="{{ route('menus.create') }}" class="btn btn-md btn-success mb-3">TAMBAH MENU</a>
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    Show 
-                                    <select name="entries" id="entries" class="form-select d-inline-block" style="width: 80px;">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                    </select>
-                                    entries
+        <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card border-0 shadow-sm rounded">
+                    <div class="card-body">
+                        <form action="{{ route('pesanans.store') }}" method="POST" enctype="multipart/form-data">
+                        
+                            @csrf
+
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold">TANGGAL PESAN</label>
+                                <input type="date" class="form-control @error('tgl_pesan') is-invalid @enderror" name="tgl_pesan" value="{{ old('tgl_pesan') }}" placeholder="Masukkan Tanggal Pesan">
+                            
+                                <!-- error message untuk title -->
+                                @error('tgl_pesan')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold">NAMA PEMESAN</label>
+                                <input type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" value="{{ old('nama_pemesan') }}" placeholder="Masukkan Nama Pemesan">
+                            
+                                <!-- error message untuk nama_pemesan -->
+                                @error('nama_pemesan')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">HARGA</label>
+                                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" value="{{ old('harga') }}" placeholder="Masukkan Harga Menu">
+                                    
+                                        <!-- error message untuk harga -->
+                                        @error('harga')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
-                                <div>
-                                    Search: <input type="text" class="form-control d-inline-block" style="width: 200px;">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">TOTAL BAYAR</label>
+                                        <input type="number" class="form-control @error('total_pembayaran') is-invalid @enderror" name="total_pembayaran" value="{{ old('total_pembayaran') }}" placeholder="Masukkan Total Pembayaran">
+                                    
+                                        <!-- error message untuk total_pembayaran -->
+                                        @error('total_pembayaran')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
                                 </div>
                             </div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th scope="col">Gambar</th>
-                                        <th scope="col">Nama Menu</th>
-                                        <th scope="col">Deskripsi</th>
-                                        <th scope="col">Harga</th>
-                                        <th scope="col">Stok</th>
-                                        <th scope="col" style="width: 20%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($menus as $menu)
-                                        <tr class="text-center">
-                                            <td class="text-center">
-                                                <img src="{{ asset('/storage/menus/'.$menu->gambar_menu) }}" class="rounded" style="width: 150px">
-                                            </td>
-                                            <td>{{ $menu->nama_menu }}</td>
-                                            <td>{!! $menu->detail_menu !!}</td>
-                                            <td>{{ "Rp " . number_format($menu->harga,2,',','.') }}</td>
-                                            <td>{{ $menu->stok }}</td>
-                                            <td class="text-center">
-                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('menus.destroy', $menu->id_menu) }}" method="POST">
-                                                    <a href="{{ route('menus.show', $menu->id_menu) }}" class="btn btn-sm btn-dark">LIHAT</a>
-                                                    <a href="{{ route('menus.edit', $menu->id_menu) }}" class="btn btn-sm btn-edit">EDIT</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-hapus">HAPUS</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="9" class="text-center">
-                                                <div class="alert alert-danger">
-                                                    Data pegawai belum Tersedia.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                            {{ $menus->links() }}
-                        </div>
+
+                            <button type="submit" class="btn btn-md btn-primary me-3">SIMPAN</button>
+                            <button type="reset" class="btn btn-md btn-warning">RESET</button>
+
+                        </form> 
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

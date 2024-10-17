@@ -98,7 +98,7 @@
     <div class="sidebar">
         <h2>KIRANA COFFE</h2>
         <a href="#"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
+        <a href="#"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="#"><i class="fas fa-truck"></i> Delivery Order</a>
         <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
@@ -124,17 +124,16 @@
             </div>
         </nav>
 
-        <!-- Data Menu Table -->
-        <div class="container mt-3">
+        <div class="col-md-12 col-sm-12">
             <div class="row">
                 <div class="col-md-12">
                     <div>
-                        <h3 class="text-center my-4">Data Menu</h3>
+                        <h3 class="text-center my-4">Data Pesanan</h3>
                         <hr>
                     </div>
                     <div class="card border-0 shadow-sm rounded">
                         <div class="card-body">
-                            <a href="{{ route('menus.create') }}" class="btn btn-md btn-success mb-3">TAMBAH MENU</a>
+                            <a href="{{ route('pesanans.create') }}" class="btn btn-md btn-success mb-3">TAMBAH PESANAN</a>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
                                     Show 
@@ -149,31 +148,30 @@
                                     Search: <input type="text" class="form-control d-inline-block" style="width: 200px;">
                                 </div>
                             </div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr class="text-center">
-                                        <th scope="col">Gambar</th>
-                                        <th scope="col">Nama Menu</th>
-                                        <th scope="col">Deskripsi</th>
-                                        <th scope="col">Harga</th>
-                                        <th scope="col">Stok</th>
-                                        <th scope="col" style="width: 20%">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($menus as $menu)
-                                        <tr class="text-center">
-                                            <td class="text-center">
-                                                <img src="{{ asset('/storage/menus/'.$menu->gambar_menu) }}" class="rounded" style="width: 150px">
-                                            </td>
-                                            <td>{{ $menu->nama_menu }}</td>
-                                            <td>{!! $menu->detail_menu !!}</td>
-                                            <td>{{ "Rp " . number_format($menu->harga,2,',','.') }}</td>
-                                            <td>{{ $menu->stok }}</td>
-                                            <td class="text-center">
-                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('menus.destroy', $menu->id_menu) }}" method="POST">
-                                                    <a href="{{ route('menus.show', $menu->id_menu) }}" class="btn btn-sm btn-dark">LIHAT</a>
-                                                    <a href="{{ route('menus.edit', $menu->id_menu) }}" class="btn btn-sm btn-edit">EDIT</a>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr class="headings text-center">
+                            <th class="col">Tanggal </th>
+                            <th class="col">Pelanggan </th>
+                            <th class="col">Harga </th>
+                            <th class="col">Total Bayar </th>
+                            <th class="col">Status </th>
+                            <th scope="col" style="width: 20%">Aksi</th>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($pesanans as $pesanan)
+                          <tr class="text-center">
+                            <td>{{ $pesanan->tgl_pesan }}</td>
+                            <td>{{ $pesanan->nama_pemesan }}</td>
+                            <td>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</td>
+                            <td>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</td>
+                            <td>{{ $pesanan->status }}</td>
+                            <td class="text-center">
+                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('pesanans.destroy', $pesanan->id_pesanan) }}" method="POST">
+                                                    <a href="{{ route('pesanans.show', $pesanan->id_pesanan) }}" class="btn btn-sm btn-dark">LIHAT</a>
+                                                    <a href="{{ route('pesanans.edit', $pesanan->id_pesanan) }}" class="btn btn-sm btn-edit">EDIT</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-hapus">HAPUS</button>
@@ -191,10 +189,8 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            {{ $menus->links() }}
-                        </div>
-                    </div>
-                </div>
+                            {{ $pesanans->links() }}	
+                  </div>
             </div>
         </div>
 

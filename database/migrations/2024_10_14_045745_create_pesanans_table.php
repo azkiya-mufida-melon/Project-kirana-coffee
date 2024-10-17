@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('id_menu')->nullable()->constrained('menus')->onDelete('set null'); // Foreign Key untuk Menu
             $table->foreignId('id_status')->nullable()->constrained('statuses')->onDelete('set null'); // Foreign Key untuk Status
             $table->foreignId('id_pegawai')->nullable()->constrained('pegawais')->onDelete('set null'); // Foreign Key untuk Pegawai
-            $table->string('bukti_pembayaran')->nullable(); // Bukti Pembayaran (bisa null)
             $table->string('nama_pemesan'); // Nama Pemesan
             $table->date('tgl_pesan'); // Tanggal Pesan
             $table->decimal('total_pembayaran', 10, 2); // Total Pembayaran
+            $table->bigInteger('harga');
             $table->timestamps();
         });
     }

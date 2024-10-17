@@ -113,84 +113,20 @@
         </nav>
 
         <!-- Data Menu Table -->
-        <div class="container mt-5 mb-5">
+        
+    <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-8">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form action="{{ route('menus.store') }}" method="POST" enctype="multipart/form-data">
-                        
-                            @csrf
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">GAMBAR</label>
-                                <input type="file" class="form-control @error('gambar_menu') is-invalid @enderror" name="gambar_menu">
-                            
-                                <!-- error message untuk image -->
-                                @error('gambar_menu')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">NAMA MENU</label>
-                                <input type="text" class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" value="{{ old('nama_menu') }}" placeholder="Masukkan Nama Menu">
-                            
-                                <!-- error message untuk title -->
-                                @error('nama_menu')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">DESKRIPSI</label>
-                                <textarea class="form-control @error('detail_menu') is-invalid @enderror" name="detail_menu" rows="5" placeholder="Masukkan Deskripsi">{{ old('detail_menu') }}</textarea>
-                            
-                                <!-- error message untuk detail_menu -->
-                                @error('detail_menu')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="font-weight-bold">HARGA</label>
-                                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" value="{{ old('harga') }}" placeholder="Masukkan Harga Menu">
-                                    
-                                        <!-- error message untuk harga -->
-                                        @error('harga')
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="font-weight-bold">STOK</label>
-                                        <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok" value="{{ old('stok') }}" placeholder="Masukkan Stok Menu">
-                                    
-                                        <!-- error message untuk stok -->
-                                        @error('stok')
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-md btn-primary me-3">SIMPAN</button>
-                            <button type="reset" class="btn btn-md btn-warning">RESET</button>
-
-                        </form> 
+                        <h3>{{ $pesanan->tgl_pesan }}</h3>
+                        <code>
+                            <p>{!! $pesanan->nama_pemesan !!}</p>
+                        </code>
+                        <hr/>
+                        <p>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</p>
+                        <hr/>
+                        <p>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</p>
                     </div>
                 </div>
             </div>

@@ -15,10 +15,15 @@ class Pesanan extends Model
         'id_menu',
         'id_status',
         'id_pegawai',
-        'bukti_pembayaran',
         'nama_pemesan',
         'tgl_pesan',
         'total_pembayaran',
+        'harga',
 
     ];
+
+    protected $primaryKey = 'id_pesanan'; // Menentukan kolom primary key
+    public $incrementing = true; // Menandakan kolom sebagai auto-increment
+    protected $keyType = 'int'; // Tipe data kunci utama
 }
+

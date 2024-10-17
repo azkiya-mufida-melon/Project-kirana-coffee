@@ -88,11 +88,10 @@
     <!-- Sidebar -->
     <div class="sidebar">
     <a href="#"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="#"><i class="fas fa-file-alt"></i> Pesanan</a>
+        <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="#"><i class="fas fa-truck"></i> Delivery Order</a>
         <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
-        <a href="#"><i class="fas fa-cogs"></i> Pengaturan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
     </div>
 
