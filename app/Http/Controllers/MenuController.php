@@ -124,7 +124,7 @@ class MenuController extends Controller
             //update product with new image
             $menu->update([
                 'gambar_menu'         => $image->hashName(),
-                'nama_menu'         => $request->gambar_menu,
+                'nama_menu'         => $request->nama_menu,
                 'detail_menu'   => $request->detail_menu,
                 'harga'         => $request->harga,
                 'stok'         => $request->stok

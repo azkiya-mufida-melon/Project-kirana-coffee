@@ -45,6 +45,7 @@ class BiodataController extends Controller
             'no_telp' => 'required|string|max:15',
             'alamat' => 'required|string',
             'email' => 'required|email|max:255',
+            'jabatan' => 'required|in:Owner,Barista,Kasir,Koki Snack',
             'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto profil
         ]);
         
@@ -65,6 +66,7 @@ class BiodataController extends Controller
             'no_telp'        => $request->no_telp,
             'alamat'          => $request->alamat,
             'email'           => $request->email,
+            'jabatan'          => $request->jabatan,
         ]);
 
         // Redirect ke index
@@ -99,6 +101,7 @@ class BiodataController extends Controller
         'no_telp' => 'required|string|max:15',
         'alamat' => 'required|string',
         'email' => 'required|email|max:255',
+        'jabatan' => 'required|in:Owner,Barista,Kasir,Koki Snack',
         'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
     ]);
 
@@ -122,6 +125,7 @@ class BiodataController extends Controller
             'no_telp' => $request->no_telp,
             'alamat' => $request->alamat,
             'email' => $request->email,
+            'jabatan' => $request->jabatan,
         ]);
     } else {
         // Update biodata tanpa foto profil baru
@@ -145,4 +149,19 @@ class BiodataController extends Controller
         //redirect to index
         return redirect()->route('biodatas.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
+
+    public function up()
+{
+    Schema::table('biodata', function (Blueprint $table) {
+        $table->string('jabatan')->nullable(); // Menambahkan kolom jabatan dengan tipe string, bisa diisi null
+    });
+}
+
+public function down()
+{
+    Schema::table('biodata', function (Blueprint $table) {
+        $table->dropColumn('jabatan'); // Menghapus kolom jabatan jika migrasi di-rollback
+    });
+}
+
 }

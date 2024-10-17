@@ -19,6 +19,7 @@ class Biodata extends Model
         'no_telp',
         'alamat',
         'email',
+        'jabatan',
         'foto_profil',
     ];
 

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('no_telp');
             $table->text('alamat');
             $table->string('email');
+            $table->enum('jabatan', ['Owner', 'Barista', 'Kasir', 'Koki Snack']);
             $table->string('foto_profil')->nullable();
             $table->timestamps();
         });
