@@ -10,6 +10,8 @@ use Illuminate\Http\RedirectResponse;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 class PesananController extends Controller
 {
     
@@ -62,5 +64,58 @@ class PesananController extends Controller
 
         //render view with product
         return view('pesanans.show', compact('pesanan'));
+    }
+
+    public function edit(string $id_pesanan): View
+    {
+        //get product by ID
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+
+        //render view with product
+        return view('pesanans.edit', compact('pesanan'));
+    }
+        
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id_pesanan): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'tgl_pesan'             => 'required|date', // validasi sebagai tanggal
+            'nama_pemesan'          => 'required|min:3|max:100|string', // minimal 3 karakter, maksimal 100, harus string
+            'harga'                 => 'required|numeric|min:0', // harus angka dan minimal 0
+            'total_pembayaran'      => 'required|numeric|min:0', // harus angka dan minimal 0
+        ]);
+
+        //get product by ID
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+
+            //update product with new image
+            $pesanan->update([
+                'tgl_pesan'         => $request->tgl_pesan,
+                'nama_pemesan'      => $request->nama_pemesan,
+                'harga'             => $request->harga,
+                'total_pembayaran'  => $request->total_pembayaran
+            ]);
+
+        //redirect to index
+        return redirect()->route('pesanans.index')->with(['success' => 'Data Berhasil Diubah!']);
+    }
+
+    public function destroy($id_pesanan): RedirectResponse
+    {
+        //get product by ID
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+
+        //delete product
+        $pesanan->delete();
+
+        //redirect to index
+        return redirect()->route('pesanans.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }
