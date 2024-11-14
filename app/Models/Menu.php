@@ -21,4 +21,9 @@ class Menu extends Model
         'stok',
         'id_kategori',
     ];
+
+    public function menu()
+    {
+    return $this->belongsTo(Menu::class, 'id_menu'); // Sesuaikan 'id_menu' dengan kolom foreign key di tabel pesanan
+    }
 }

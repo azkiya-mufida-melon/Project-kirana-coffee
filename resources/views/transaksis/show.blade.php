@@ -96,7 +96,7 @@
     <!-- Main Content -->
     <div class="content">
         <nav class="navbar d-flex justify-content-between">
-            <span class="navbar-brand text-white">KIRANA COFFEE - Menu</span>
+            <span class="navbar-brand text-white">KIRANA COFFEE - Transaksi</span>
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-lg me-3"></i>
                 <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Profile Picture">
@@ -116,24 +116,17 @@
         
     <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded">
-                    <div class="card-body">
-                        <img src="{{ asset('/storage/menus/'.$menu->gambar_menu) }}" class="rounded" style="width: 100%">
-                    </div>
-                </div>
-            </div>
             <div class="col-md-8">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <h3>{{ $menu->nama_menu }}</h3>
+                        <h3>{{ $transaksi->id_pesanan }}</h3>
                         <code>
-                            <p>{!! $menu->detail_menu !!}</p>
+                            <p>{!! $transaksi->tgl_pesan !!}</p>
                         </code>
                         <hr/>
-                        <p>{{ "Rp " . number_format($menu->harga,2,',','.') }}</p>
+                        <p>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</p>
                         <hr/>
-                        <p>Stok : {{ $menu->stok }}</p>
+                        <p>{{ "Rp " . number_format($transaksi->total_pembayaran,2,',','.') }}</p>
                     </div>
                 </div>
             </div>

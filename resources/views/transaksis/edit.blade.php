@@ -17,7 +17,7 @@
             max-width: 250px;
             background: #ffffff; /* Dark brown color */
             color: black;
-            height: 100vh;
+            height: auto;
             padding: 20px;
         }
         .sidebar h2 {
@@ -56,6 +56,7 @@
         .content {
             flex-grow: 1;
             padding: 20px;
+            min-height: 100vh;
         }
         .card {
             background-color: #fffaf0; /* Card background */
@@ -78,6 +79,9 @@
         table th {
             background-color: #e0e0e0; /* Table header color */
         }
+        .table thead th {
+            background-color: #d9d9d9;
+        }
     </style>
 </head>
 <body>
@@ -96,7 +100,7 @@
     <!-- Main Content -->
     <div class="content">
         <nav class="navbar d-flex justify-content-between">
-            <span class="navbar-brand text-white">KIRANA COFFEE - Menu</span>
+            <span class="navbar-brand text-white">KIRANA COFFEE - Transaksi</span>
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-lg me-3"></i>
                 <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Profile Picture">
@@ -112,22 +116,35 @@
             </div>
         </nav>
 
-        <!-- Data Menu Table -->
-        <div class="container mt-5 mb-5">
+
+	<div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form action="{{ route('menus.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('transaksis.update', $transaksi->id_transaksi) }}" method="POST" enctype="multipart/form-data">
                         
                             @csrf
+                            @method('PUT')
 
                             <div class="form-group mb-3">
-                                <label class="font-weight-bold">GAMBAR</label>
-                                <input type="file" class="form-control @error('gambar_menu') is-invalid @enderror" name="gambar_menu">
+                                <label class="font-weight-bold">ID PESANAN</label>
+                                <input type="number" class="form-control @error('id_pesanan') is-invalid @enderror" name="id_pesanan" value="{{ old('id_pesanan', $transaksi->id_pesanan) }}" placeholder="Masukkan ID Pesanan">
                             
-                                <!-- error message untuk image -->
-                                @error('gambar_menu')
+                                <!-- error message untuk id_pesanan -->
+                                @error('id_pesanan')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold">TANGGAL TRANSAKSI</label>
+                                <input type="date" class="form-control @error('tgl_pesan') is-invalid @enderror" name="tgl_pesan" value="{{ old('tgl_pesan', $transaksi->tgl_pesan) }}" placeholder="Masukkan Tanggal Pesan">
+                            
+                                <!-- error message untuk tgl_pesan -->
+                                @error('tgl_pesan')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>
@@ -135,34 +152,36 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label class="font-weight-bold">NAMA MENU</label>
-                                <input type="text" class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" value="{{ old('nama_menu') }}" placeholder="Masukkan Nama Menu">
+                                <label class="font-weight-bold">NAMA PELANGGAN</label>
+                                <input type="text" class="form-control @error('nama_pemesan') is-invalid @enderror" name="nama_pemesan" rows="5" placeholder="Masukkan Nama Pemesan">{{ old('nama_pemesan', $transaksi->nama_pemesan) }}</input>
                             
-                                <!-- error message untuk title -->
-                                @error('nama_menu')
+                                <!-- error message untuk nama_pemesan -->
+                                @error('nama_pemesan')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-
-                            <div class="form-group mb-3">
-                                <label class="font-weight-bold">DESKRIPSI</label>
-                                <textarea class="form-control @error('detail_menu') is-invalid @enderror" name="detail_menu" rows="5" placeholder="Masukkan Deskripsi">{{ old('detail_menu') }}</textarea>
-                            
-                                <!-- error message untuk detail_menu -->
-                                @error('detail_menu')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">MENU</label>
+                                        <input type="text" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Masukkan status transaksi">
+                                    
+                                        <!-- error message untuk status -->
+                                        @error('status')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                     </div>
-                                @enderror
-                            </div>
+                                </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">HARGA</label>
-                                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" value="{{ old('harga') }}" placeholder="Masukkan Harga Menu">
+                                        <input type="number" class="form-control @error('harga') is-invalid @enderror" name="harga" value="{{ old('harga', $transaksi->harga) }}" placeholder="Masukkan Harga Menu">
                                     
                                         <!-- error message untuk harga -->
                                         @error('harga')
@@ -174,20 +193,34 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label class="font-weight-bold">STOK</label>
-                                        <input type="number" class="form-control @error('stok') is-invalid @enderror" name="stok" value="{{ old('stok') }}" placeholder="Masukkan Stok Menu">
+                                        <label class="font-weight-bold">TOTAL BAYAR</label>
+                                        <input type="number" class="form-control @error('total_pembayaran') is-invalid @enderror" name="total_pembayaran" value="{{ old('total_pembayaran', $transaksi->total_pembayaran) }}" placeholder="Masukkan Total Pembayaran">
                                     
-                                        <!-- error message untuk stok -->
-                                        @error('stok')
+                                        <!-- error message untuk stock -->
+                                        @error('total_pembayaran')
                                             <div class="alert alert-danger mt-2">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="font-weight-bold">STATUS</label>
+                                            <input type="number" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Masukkan status Menu">
+                                        
+                                            <!-- error message untuk status -->
+                                            @error('status')
+                                                <div class="alert alert-danger mt-2">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                    </div>
                             </div>
 
-                            <button type="submit" class="btn btn-md btn-primary me-3">SIMPAN</button>
+                            <button type="submit" class="btn btn-md btn-primary me-3">UPDATE</button>
                             <button type="reset" class="btn btn-md btn-warning">RESET</button>
 
                         </form> 
@@ -197,30 +230,8 @@
         </div>
     </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script>
-            //message with sweetalert
-            @if(session('success'))
-                Swal.fire({
-                    icon: "success",
-                    title: "BERHASIL",
-                    text: "{{ session('success') }}",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            @elseif(session('error'))
-                Swal.fire({
-                    icon: "error",
-                    title: "GAGAL!",
-                    text: "{{ session('error') }}",
-                    showConfirmButton: false,
-                    timer: 2000
-                });
-            @endif
-        </script>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
 
 </body>
 </html>

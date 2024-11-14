@@ -95,10 +95,10 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-    <a href="#"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
-        <a href="#"><i class="fas fa-truck"></i> Delivery Order</a>
+        <a href="#"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
+        <a href="{{ route('pesanans.index') }}"><i class="fas fa-truck"></i> Pesanan</a>
+        <a href="{{ route('transaksis.index') }}"><i class="fas fa-file-alt"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
     </div>
@@ -106,7 +106,7 @@
     <!-- Main Content -->
     <div class="content">
         <nav class="navbar d-flex justify-content-between">
-            <span class="navbar-brand text-white">KIRANA COFFEE - Menu</span>
+            <span class="navbar-brand text-white">KIRANA COFFEE - Biodata</span>
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-lg me-3"></i>
                 <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Profile Picture">

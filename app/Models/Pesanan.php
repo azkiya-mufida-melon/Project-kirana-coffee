@@ -25,5 +25,11 @@ class Pesanan extends Model
     protected $primaryKey = 'id_pesanan'; // Menentukan kolom primary key
     public $incrementing = true; // Menandakan kolom sebagai auto-increment
     protected $keyType = 'int'; // Tipe data kunci utama
+
+    public function menu()
+    {
+    return $this->belongsTo(Menu::class, 'id_menu'); // Sesuaikan 'id_menu' dengan kolom foreign key di tabel pesanan
+    }
+
 }
 

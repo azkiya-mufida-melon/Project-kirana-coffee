@@ -108,7 +108,7 @@
     <!-- Main Content -->
     <div class="content">
         <nav class="navbar d-flex justify-content-between">
-            <span class="navbar-brand text-white">KIRANA COFFEE - Pesanan</span>
+            <span class="navbar-brand text-white">KIRANA COFFEE - Transaksi</span>
             <div class="d-flex align-items-center">
                 <i class="fas fa-bell fa-lg me-3"></i>
                 <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Profile Picture">
@@ -128,12 +128,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div>
-                        <h3 class="text-center my-4">Data Pesanan</h3>
+                        <h3 class="text-center my-4">Data Transaksi</h3>
                         <hr>
                     </div>
                     <div class="card border-0 shadow-sm rounded">
                         <div class="card-body">
-                            <a href="{{ route('pesanans.create') }}" class="btn btn-md btn-success mb-3">TAMBAH PESANAN</a>
+                            <a href="{{ route('transaksis.create') }}" class="btn btn-md btn-success mb-3">TAMBAH TRANSAKSI</a>
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
                                     Show 
@@ -151,27 +151,33 @@
                       <table class="table table-bordered">
                         <thead>
                           <tr class="headings text-center">
-                            <th class="col">Tanggal </th>
-                            <th class="col">Pelanggan </th>
+                            <th class="col">Id Pesanan </th>
+                            <th class="col">Tanggal Transaksi </th>
+                            <th class="col">Nama Pelanggan </th>
                             <th class="col">Menu </th>
                             <th class="col">Harga </th>
                             <th class="col">Total Bayar </th>
+                            <th class="col">Metode Pembayaran </th>
+                            <th class="col">Status </th>
                             <th scope="col" style="width: 20%">Aksi</th>
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                            @forelse ($pesanans as $pesanan)
+                            @forelse ($transaksis as $transaksi)
                           <tr class="text-center">
-                            <td>{{ $pesanan->tgl_pesan }}</td>
-                            <td>{{ $pesanan->nama_pemesan }}</td>
-                            <td>{{ $pesanan->menu }}</td>
-                            <td>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</td>
-                            <td>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</td>
+                            <td>{{ $transaksi->id_pesanan }}</td>
+                            <td>{{ $transaksi->tgl_pesan }}</td>
+                            <td>{{ $transaksi->nama_pemesan }}</td>
+                            <td>{{ $transaksi->menu }}</td>
+                            <td>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</td>
+                            <td>{{ "Rp " . number_format($transaksi->total_pembayaran,2,',','.') }}</td>
+                            <td>{{ $transaksi->metode_pembayaran }}</td>
+                            <td>{{ $transaksi->status == 'Lunas' ? 'Lunas' : 'Belum Lunas' }}</td>
                             <td class="text-center">
-                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('pesanans.destroy', $pesanan->id_pesanan) }}" method="POST">
-                                                    <a href="{{ route('pesanans.show', $pesanan->id_pesanan) }}" class="btn btn-sm btn-dark">LIHAT</a>
-                                                    <a href="{{ route('pesanans.edit', $pesanan->id_pesanan) }}" class="btn btn-sm btn-edit">EDIT</a>
+                                                <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('transaksis.destroy', $transaksi->id_transaksi) }}" method="POST">
+                                                    <a href="{{ route('transaksis.show', $transaksi->id_transaksi) }}" class="btn btn-sm btn-dark">LIHAT</a>
+                                                    <a href="{{ route('transaksis.edit', $transaksi->id_transaksi) }}" class="btn btn-sm btn-edit">EDIT</a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-hapus">HAPUS</button>
@@ -182,14 +188,14 @@
                                         <tr>
                                             <td colspan="9" class="text-center">
                                                 <div class="alert alert-danger">
-                                                    Data pegawai belum Tersedia.
+                                                    Data Transaksi belum Tersedia.
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
-                            {{ $pesanans->links() }}	
+                            {{ $transaksis->links() }}	
                   </div>
             </div>
         </div>
