@@ -121,9 +121,13 @@
                     <div class="card-body">
                         <h3>{{ $transaksi->id_pesanan }}</h3>
                         <code>
-                            <p>{!! $transaksi->tgl_pesan !!}</p>
+                            <p>{!! $transaksi->tgl_transaksi !!}</p>
                         </code>
                         <hr/>
+                        <p>{{ $transaksi->metode_pembayaran }}</p>
+                        </hr>
+                        <p>{{ $transaksi->status }}</p>
+                        </hr>
                         <p>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</p>
                         <hr/>
                         <p>{{ "Rp " . number_format($transaksi->total_pembayaran,2,',','.') }}</p>

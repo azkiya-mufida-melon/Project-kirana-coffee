@@ -160,10 +160,10 @@
 
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">MENU</label>
-                                <input type="text" class="form-control @error('jumlah_bayar') is-invalid @enderror" name="jumlah_bayar" value="{{ old('jumlah_bayar') }}" placeholder="Masukkan Menu">
+                                <input type="text" class="form-control @error('nama_menu') is-invalid @enderror" name="nama_menu" value="{{ old('nama_menu') }}" placeholder="Masukkan Menu">
                             
-                                <!-- error message untuk jumlah_bayar -->
-                                @error('jumlah_bayar')
+                                <!-- error message untuk nama_menu -->
+                                @error('nama_menu')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>
@@ -187,16 +187,26 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">TOTAL BAYAR</label>
-                                        <input type="number" class="form-control @error('total_bayar') is-invalid @enderror" name="total_bayar" value="{{ old('total_bayar') }}" placeholder="Masukkan Total Bayar">
+                                        <input type="number" class="form-control @error('jumlah_bayar') is-invalid @enderror" name="jumlah_bayar" value="{{ old('jumlah_bayar') }}" placeholder="Masukkan Total Bayar">
                                     
-                                        <!-- error message untuk total_bayar -->
-                                        @error('total_bayar')
+                                        <!-- error message untuk jumlah_bayar -->
+                                        @error('jumlah_bayar')
                                             <div class="alert alert-danger mt-2">
                                                 {{ $message }}
                                             </div>
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label class="font-weight-bold">METODE PEMBAYARAN</label>
+                                    <input type="text" class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" value="{{ old('metode_pembayaran') }}" placeholder="Masukkan Metode Pembayaran">
+                                    @error('metode_pembayaran')
+                                        <div class="alert alert-danger mt-2">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">STATUS TRANSAKSI</label>

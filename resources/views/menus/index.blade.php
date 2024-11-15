@@ -136,18 +136,22 @@
                         <div class="card-body">
                             <a href="{{ route('menus.create') }}" class="btn btn-md btn-success mb-3">TAMBAH MENU</a>
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    Show 
-                                    <select name="entries" id="entries" class="form-select d-inline-block" style="width: 80px;">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                    </select>
-                                    entries
-                                </div>
-                                <div>
-                                    Search: <input type="text" class="form-control d-inline-block" style="width: 200px;">
-                                </div>
+                                <form method="GET" action="{{ route('menus.index') }}" class="d-flex justify-content-between align-items-center mb-3 w-100">
+                                    <div>
+                                        Show 
+                                        <select name="entries" id="entries" class="form-select d-inline-block" style="width: 80px;">
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        entries
+                                    </div>
+                                    <div>
+                                        Search: <input type="text" name="search" class="form-control d-inline-block" style="width: 200px;" value="{{ request()->query('search') }}">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary d-none">Search</button>
+                                </form>
+                                
                             </div>
                             <table class="table table-bordered">
                                 <thead>
@@ -184,7 +188,7 @@
                                         <tr>
                                             <td colspan="9" class="text-center">
                                                 <div class="alert alert-danger">
-                                                    Data pegawai belum Tersedia.
+                                                    Data menu belum Tersedia.
                                                 </div>
                                             </td>
                                         </tr>

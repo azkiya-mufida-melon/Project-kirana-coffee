@@ -18,6 +18,7 @@ class Pesanan extends Model
         'nama_pemesan',
         'tgl_pesan',
         'total_pembayaran',
+        'jumlah_pesanan',
         'harga',
 
     ];

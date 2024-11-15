@@ -135,6 +135,20 @@
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
                         <a href="{{ route('biodatas.create') }}" class="btn btn-md btn-success mb-3">TAMBAH PEGAWAI</a>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    Show 
+                                    <select name="entries" id="entries" class="form-select d-inline-block" style="width: 80px;">
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="50">50</option>
+                                    </select>
+                                    entries
+                                </div>
+                                <div>
+                                    Search: <input type="text" name="search" class="form-control d-inline-block" style="width: 200px;" value="{{ request()->query('search') }}">
+                                </div>
+                        </div>
                         <table class="table table-sm table-bordered">
                         <thead>
                             <tr class="text-center">

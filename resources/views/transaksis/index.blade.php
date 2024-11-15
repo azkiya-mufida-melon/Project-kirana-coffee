@@ -145,7 +145,7 @@
                                     entries
                                 </div>
                                 <div>
-                                    Search: <input type="text" class="form-control d-inline-block" style="width: 200px;">
+                                    Search: <input type="text" name="search" class="form-control d-inline-block" style="width: 200px;" value="{{ request()->query('search') }}">
                                 </div>
                             </div>
                       <table class="table table-bordered">
@@ -167,7 +167,7 @@
                             @forelse ($transaksis as $transaksi)
                           <tr class="text-center">
                             <td>{{ $transaksi->id_pesanan }}</td>
-                            <td>{{ $transaksi->tgl_pesan }}</td>
+                            <td>{{ $transaksi->tgl_transaksi }}</td>
                             <td>{{ $transaksi->nama_pemesan }}</td>
                             <td>{{ $transaksi->menu }}</td>
                             <td>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</td>

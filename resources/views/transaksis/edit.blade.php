@@ -141,10 +141,10 @@
                             
                             <div class="form-group mb-3">
                                 <label class="font-weight-bold">TANGGAL TRANSAKSI</label>
-                                <input type="date" class="form-control @error('tgl_pesan') is-invalid @enderror" name="tgl_pesan" value="{{ old('tgl_pesan', $transaksi->tgl_pesan) }}" placeholder="Masukkan Tanggal Pesan">
+                                <input type="date" class="form-control @error('tgl_transaksi') is-invalid @enderror" name="tgl_transaksi" value="{{ old('tgl_transaksi', $transaksi->tgl_transaksi) }}" placeholder="Masukkan Tanggal Pesan">
                             
-                                <!-- error message untuk tgl_pesan -->
-                                @error('tgl_pesan')
+                                <!-- error message untuk tgl_transaksi -->
+                                @error('tgl_transaksi')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>
@@ -166,7 +166,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="font-weight-bold">MENU</label>
-                                        <input type="text" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Masukkan status transaksi">
+                                        <input type="text" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Masukkan Menu">
                                     
                                         <!-- error message untuk status -->
                                         @error('status')
@@ -208,7 +208,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="font-weight-bold">STATUS</label>
-                                            <input type="number" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Masukkan status Menu">
+                                            <input type="text" class="form-control @error('status') is-invalid @enderror" name="status" value="{{ old('status', $transaksi->status) }}" placeholder="Lunas/Belum Lunas">
                                         
                                             <!-- error message untuk status -->
                                             @error('status')

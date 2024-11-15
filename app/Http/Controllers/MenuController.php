@@ -20,14 +20,20 @@ class MenuController extends Controller
      *
      * @return void
      */
-    public function index() : View
+    public function index(Request $request)
     {
-        //get all products
-        $menus = Menu::latest()->paginate(10);
+    $search = $request->get('search');
+    $entries = $request->get('entries', 10);
 
-        //render view with products
-        return view('menus.index', compact('menus'));
+    $menus = Menu::when($search, function ($query, $search) {
+        return $query->where('nama_menu', 'like', '%' . $search . '%');
+    })
+    ->paginate($entries); // Memastikan pagination sesuai dengan jumlah entri
+
+
+    return view('menus.index', compact('menus'));
     }
+
 
     /**
      * create

@@ -3,119 +3,162 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
-
 use App\Models\Pesanan;
-
-use Illuminate\View\View;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class PesananController extends Controller
 {
-    
-    public function index() : View
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        //get all products
-        $pesanans = Pesanan::latest()->paginate(10);
+    $search = $request->get('search');
+    $entries = $request->get('entries', 10);
+    $date_search = $request->get('date_search'); // Ambil parameter date_search dari request
 
-        //render view with products
-        return view('pesanans.index', compact('pesanans'));
+    $pesanans = Pesanan::when($search, function ($query, $search) {
+        return $query->where('nama_pemesan', 'like', '%' . $search . '%');
+    })
+    ->paginate($entries); // Memastikan pagination sesuai dengan jumlah entri
+
+    return view('pesanans.index', compact('pesanans'));
     }
 
-    public function create()
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
     {
-        $menus = Menu::all(); // Ambil semua data menu
+        // Get all menus for the dropdown selection in form
+        $menus = Menu::all();
+
         return view('pesanans.create', compact('menus'));
     }
 
     /**
-     * store
-     *
-     * @param  mixed $request
-     * @return RedirectResponse
+     * Store a newly created resource in storage.
      */
     public function store(Request $request): RedirectResponse
     {
-        //validate form
+        // Validate form inputs
         $request->validate([
-            'id_menu'               => 'required|exists:menus,id',
-            'tgl_pesan'             => 'required|date', // validasi sebagai tanggal
-            'nama_pemesan'          => 'required|min:3|max:100|string', // minimal 3 karakter, maksimal 100, harus string
-            'harga'                 => 'required|numeric|min:0', // harus angka dan minimal 0
-            'total_pembayaran'      => 'required|numeric|min:0', // harus angka dan minimal 0
-        ]);        
+            'id_menu'           => 'required|exists:menus,id_menu',
+            'tgl_pesan'         => 'required|date', 
+            'nama_pemesan'      => 'required|min:3|max:100|string', 
+            'harga'             => 'required|numeric|min:0', 
+            'total_pembayaran'  => 'required|numeric|min:0', 
+            'jumlah_pesanan'    => 'required', 
+        ]);
 
+        // Retrieve the selected menu's data
         $menu = Menu::findOrFail($request->id_menu);
 
-        //create product
+        if ($menu->stok < $request->jumlah_pesanan) {
+            return redirect()->back()->withInput($request->except('jumlah_pesanan'))->with('error', 'Stok tidak mencukupi.');
+        }
+        // Create a new order
         Pesanan::create([
             'id_menu'           => $request->id_menu,
             'tgl_pesan'         => $request->tgl_pesan,
             'nama_pemesan'      => $request->nama_pemesan,
-            'harga'             => $request->harga,
-            'total_pembayaran'  => $request->total_pembayaran
+            'harga'             => $menu->harga,  // Use the price from the selected menu
+            'total_pembayaran'  => $request->total_pembayaran,
+            'jumlah_pesanan'    => $request->jumlah_pesanan,
         ]);
 
-        //redirect to index
-        return redirect()->route('pesanans.index')->with(['success' => 'Data Berhasil Disimpan!']);
+        // Reduce the stock of the menu item
+        $menu->stok -= $request->jumlah_pesanan;
+        $menu->save(); // Save the updated stock
+
+        // Redirect to the index page with a success message
+        return redirect()->route('pesanans.index')->with('success', 'Data Berhasil Disimpan!');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show(string $id_pesanan): View
     {
-        //get product by ID
+        // Get the order by ID
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
-        //render view with product
         return view('pesanans.show', compact('pesanan'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(string $id_pesanan): View
     {
-        //get product by id_pesanan
+        // Get the order by ID
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
-        //render view with product
-        return view('pesanans.edit', compact('pesanan'));
+        // Get all menus
+        $menus = Menu::all(); // Pastikan model Menu ada dan benar
+
+        return view('pesanans.edit', compact('pesanan', 'menus'));
     }
 
-    public function update(Request $request, $id_pesanan): RedirectResponse
-{
-    // Validasi form
-    $request->validate([
-        'tgl_pesan'             => 'required|date', 
-        'nama_pemesan'          => 'required|min:3|max:100|string', 
-        'harga'                 => 'required|numeric|min:0', 
-        'total_pembayaran'      => 'required|numeric|min:0', 
-    ]);
 
-    // Mendapatkan pesanan berdasarkan ID
-    $pesanan = Pesanan::findOrFail($id_pesanan);
-
-    // Update pesanan tanpa gambar
-    $pesanan->update([
-        'tgl_pesan'         => $request->tgl_pesan,
-        'nama_pemesan'      => $request->nama_pemesan,
-        'harga'             => $request->harga,
-        'total_pembayaran'  => $request->total_pembayaran
-    ]);
-
-    // Redirect ke index
-    return redirect()->route('pesanans.index')->with(['success' => 'Data Berhasil Diubah!']);
-}
-
-
-    public function destroy($id_pesanan): RedirectResponse
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id_pesanan): RedirectResponse
     {
-        // Mendapatkan pesanan berdasarkan ID
+        // Validate form inputs
+        $request->validate([
+            'tgl_pesan'         => 'required|date', 
+            'nama_pemesan'      => 'required|min:3|max:100|string', 
+            'harga'             => 'required|numeric|min:0', 
+            'total_pembayaran'  => 'required|numeric|min:0', 
+            'jumlah_pesanan'    => 'required', 
+        ]);
+
+        // Get the order by ID
         $pesanan = Pesanan::findOrFail($id_pesanan);
 
-        // Menghapus pesanan
+        $menu = Menu::findOrFail($pesanan->id_menu);
+
+        if ($menu->stok < $request->jumlah_pesanan) {
+            // Return to the form with an error and keep the form data (except 'jumlah_pesanan')
+            return redirect()->back()->withInput($request->except('jumlah_pesanan'))->with('error', 'Stok tidak mencukupi.');
+        }
+
+        // Update the order
+        $pesanan->update([
+            'tgl_pesan'         => $request->tgl_pesan,
+            'nama_pemesan'      => $request->nama_pemesan,
+            'harga'             => $request->harga,
+            'total_pembayaran'  => $request->total_pembayaran,
+            'jumlah_pesanan'    => $request->jumlah_pesanan,
+        ]);
+
+        $menu->stok -= $request->jumlah_pesanan;
+        $menu->save(); // Save the updated stock
+
+        // Redirect to the index page with a success message
+        return redirect()->route('pesanans.index')->with('success', 'Data Berhasil Diubah!');
+        
+        dd(session()->all()); // Menampilkan semua session yang ada untuk debugging
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id_pesanan): RedirectResponse
+    {
+        // Get the order by ID
+        $pesanan = Pesanan::findOrFail($id_pesanan);
+
+        // Delete the order
         $pesanan->delete();
 
-        // Redirect ke index
-        return redirect()->route('pesanans.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        // Redirect to the index page with a success message
+        return redirect()->route('pesanans.index')->with('success', 'Data Berhasil Dihapus!');
     }
-
-
 }
