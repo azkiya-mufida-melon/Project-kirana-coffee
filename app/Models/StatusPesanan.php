@@ -5,21 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Laporan extends Model
+class StatusPesanan extends Model
 {
     use HasFactory;
 
     // Nama tabel
-    protected $table = 'laporans';
-
+    protected $table = 'status_pesanans';
+    
     // Primary key jika bukan `id`
-    protected $primaryKey = 'id_laporan';
-    public $incrementing = true; // Assuming `id_laporan` is an integer and auto-incremented
-    protected $keyType = 'int';
+    protected $primaryKey = 'id_status';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     // Kolom yang boleh diisi
     protected $fillable = [
         'id_pesanan',
-        'tgl_laporan'
+        'nama_pemesan',
+        'detail_pesanan',
+        'status'
     ];
 }
