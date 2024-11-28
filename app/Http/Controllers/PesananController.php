@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Menu;
 use App\Models\Pesanan;
+use App\Models\Transaksi;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
 
 class PesananController extends Controller
 {
@@ -51,7 +53,7 @@ class PesananController extends Controller
             'nama_pemesan'      => 'required|min:3|max:100|string', 
             'harga'             => 'required|numeric|min:0', 
             'total_pembayaran'  => 'required|numeric|min:0', 
-            'jumlah_pesanan'    => 'required', 
+            'jumlah_pesanan'    => 'required|integer|min:1', 
         ]);
 
         // Retrieve the selected menu's data
@@ -73,6 +75,7 @@ class PesananController extends Controller
         // Reduce the stock of the menu item
         $menu->stok -= $request->jumlah_pesanan;
         $menu->save(); // Save the updated stock
+    
 
         // Redirect to the index page with a success message
         return redirect()->route('pesanans.index')->with('success', 'Data Berhasil Disimpan!');
@@ -115,7 +118,7 @@ class PesananController extends Controller
             'nama_pemesan'      => 'required|min:3|max:100|string', 
             'harga'             => 'required|numeric|min:0', 
             'total_pembayaran'  => 'required|numeric|min:0', 
-            'jumlah_pesanan'    => 'required', 
+            'jumlah_pesanan'    => 'required|integer|min:1', 
         ]);
 
         // Get the order by ID

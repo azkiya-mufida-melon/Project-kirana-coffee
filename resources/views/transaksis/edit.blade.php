@@ -95,6 +95,8 @@
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -185,6 +187,45 @@
                                     
                                         <!-- error message untuk harga -->
                                         @error('harga')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">TOTAL BAYAR</label>
+                                        <input type="number" class="form-control @error('total_pembayaran') is-invalid @enderror" name="total_pembayaran" value="{{ old('total_pembayaran', $transaksi->total_pembayaran) }}" placeholder="Masukkan Total Pembayaran">
+                                    
+                                        <!-- error message untuk stock -->
+                                        @error('total_pembayaran')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">JUMLAH PESANAN</label>
+                                        <input type="number" class="form-control @error('jumlah_pesanan') is-invalid @enderror" name="jumlah_pesanan" value="{{ old('jumlah_pesanan', $transaksi->jumlah_pesanan) }}" placeholder="Masukkan Total Pembayaran">
+                                    
+                                        <!-- error message untuk stock -->
+                                        @error('jumlah_pesanan')
+                                            <div class="alert alert-danger mt-2">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="font-weight-bold">METODE PEMBAYARAN</label>
+                                        <input type="number" class="form-control @error('metode_pembayaran') is-invalid @enderror" name="metode_pembayaran" value="{{ old('metode_pembayaran', $transaksi->metode_pembayaran) }}" placeholder="Masukkan Total Pembayaran">
+                                    
+                                        <!-- error message untuk stock -->
+                                        @error('metode_pembayaran')
                                             <div class="alert alert-danger mt-2">
                                                 {{ $message }}
                                             </div>

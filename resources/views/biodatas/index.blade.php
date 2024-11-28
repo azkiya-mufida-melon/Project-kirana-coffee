@@ -103,7 +103,13 @@
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
+<<<<<<< Updated upstream
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+=======
+        <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
+        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
+>>>>>>> Stashed changes
     </div>
 
     <!-- Main Content -->
@@ -190,7 +196,7 @@
                                 <tr>
                                     <td colspan="9" class="text-center">
                                         <div class="alert alert-danger">
-                                            Data pegawai belum Tersedia.
+                                            Data pegawai belum tersedia.
                                         </div>
                                     </td>
                                 </tr>

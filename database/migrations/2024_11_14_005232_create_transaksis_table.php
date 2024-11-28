@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_customer')->nullable()->constrained('customers')->onDelete('set null'); // Foreign Key untuk Customer
-            $table->foreignId('id_pesanan')->nullable()->constrained('pesanans')->onDelete('set null'); // Foreign Key untuk Pesanan
+            $table->foreignId('id_pesanan')->constrained('pesanans')->onDelete('cascade');            
             $table->date('tgl_transaksi');
-            $table->decimal('jumlah_bayar', 10, 2);
-            $table->foreignId('metode_pembayaran');
-            $table->enum('status_transaksi', ['Lunas', 'Belum Lunas']);
+            $table->decimal('total_bayar', 10, 2)->nullable()->change();
+            $table->integer('jumlah_pesanan');
+            $table->enum('metode_pembayaran', allowed: ['Cash', 'QRIS'])->nullable()->change();
+            $table->enum('status_transaksi', ['Lunas', 'Belum Lunas'])->nullable()->change();
 
             $table->timestamps();
         });

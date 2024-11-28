@@ -32,5 +32,10 @@ class Pesanan extends Model
     return $this->belongsTo(Menu::class, 'id_menu'); // Sesuaikan 'id_menu' dengan kolom foreign key di tabel pesanan
     }
 
+    public function transaksi()
+    {
+    return $this->hasOne(Transaksi::class);
+    }
+
 }
 

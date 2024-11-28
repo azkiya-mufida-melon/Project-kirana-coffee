@@ -16,8 +16,14 @@ class Transaksi extends Model
         'id_customer',
         'id_pesanan',
         'tgl_transaksi',
-        'jumlah_bayar',
+        'total_bayar',
+        'jumlah_pesanan',
         'metode_pembayaran',
         'status_transaksi',
     ];
+    
+    public function pesanan()
+    {
+        return $this->belongsTo(Pesanan::class, 'id_pesanan');
+    }
 }

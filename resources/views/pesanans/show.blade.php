@@ -127,6 +127,8 @@
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -157,11 +159,19 @@
                     <div class="card-body">
                         <h3>{{ $pesanan->tgl_pesan }}</h3>
                         <code>
-                            <p>{!! $pesanan->nama_pemesan !!}</p>
+                            <p><strong>Nama Pemesan:</strong> {!! $pesanan->nama_pemesan !!}</p>
                         </code>
                         <hr/>
+                        <p><strong>Menu:</strong></p>
+                        <p>{{ $pesanan->menu->nama_menu }}</p>
+                        <hr/>
+                        <p><strong>Harga:</strong></p>
                         <p>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</p>
                         <hr/>
+                        <p><strong>Jumlah Pesanan:</strong></p>
+                        <p>{{ $pesanan->jumlah_pesanan }}</p>
+                        <hr/>
+                        <p><strong>Total Pembayaran:</strong></p>
                         <p>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</p>
                     </div>
                 </div>

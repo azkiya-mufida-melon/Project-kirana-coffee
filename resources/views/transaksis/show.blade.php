@@ -91,6 +91,8 @@
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -130,7 +132,7 @@
                         </hr>
                         <p>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</p>
                         <hr/>
-                        <p>{{ "Rp " . number_format($transaksi->total_pembayaran,2,',','.') }}</p>
+                        <p>{{ "Rp " . number_format($transaksi->total_bayar,2,',','.') }}</p>
                     </div>
                 </div>
             </div>

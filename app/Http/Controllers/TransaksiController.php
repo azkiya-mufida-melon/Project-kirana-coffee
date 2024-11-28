@@ -14,7 +14,7 @@ class TransaksiController extends Controller
     public function index() : View
     {
         //get all products
-        $transaksis = Transaksi::latest()->paginate(10);
+        $transaksis = Transaksi::with('pesanan.menu')->paginate(10);
 
         //render view with products
         return view('transaksis.index', compact('transaksis'));
@@ -31,7 +31,8 @@ class TransaksiController extends Controller
         $request->validate([
             'id_pesanan'          => 'required|numeric',
             'tgl_transaksi'       => 'required|date',
-            'jumlah_bayar'        => 'required',
+            'total_bayar'        => 'required',
+            'jumlah_pesanan'     => 'required',
             'metode_pembayaran'   => 'required',
             'status_transaksi'    => 'required',
         ]);
@@ -40,7 +41,8 @@ class TransaksiController extends Controller
         Transaksi::create([
             'id_pesanan'            => $request->id_pesanan,
             'tgl_transaksi'         => $request->tgl_transaksi,
-            'jumlah_bayar'          => $request->jumlah_bayar,
+            'total_bayar'           => $request->total_bayar,
+            'jumlah_pesanan'        => $request->jumlah_pesanan,
             'metode_pembayaran'     => $request->metode_pembayaran,
             'status_transaksi'      => $request->status_transaksi,
         ]);
@@ -73,9 +75,10 @@ class TransaksiController extends Controller
         $request->validate([
             'id_pesanan'          => 'required|numeric',
             'tgl_transaksi'       => 'required|date',
-            'jumlah_bayar'        => 'required',
-            'metode_pembayaran'   => 'required',
-            'status_transaksi'    => 'required',
+            'total_bayar'         => 'required',
+            'jumlah_pesanan'      => 'required',
+            'metode_pembayaran'   => 'in:Cash,QRIS',
+            'status_transaksi' => 'in:Lunas,Belum Lunas',
         ]);
 
         //get product by ID
@@ -85,9 +88,10 @@ class TransaksiController extends Controller
             $transaksi->update([
                 'id_pesanan'            => $request->id_pesanan,
                 'tgl_transaksi'         => $request->tgl_transaksi,
-                'jumlah_bayar'          => $request->jumlah_bayar,
-                'metode_pembayaran'     => $request->metode_pembayaran,
-                'status_transaksi'      => $request->status_transaksi,
+                'total_bayar'           => $request->total_bayar,
+                'jumlah_pesanan'        => $request->jumlah_pesanan,
+                'metode_pembayaran' => $request->input('metode_pembayaran'),
+                'status_transaksi' => $request->input('status_transaksi'),
             ]);
 
         //redirect to index

@@ -127,6 +127,8 @@
             <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
             <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
             <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+            <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+            <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -182,6 +184,7 @@
                             <th class="col">Pelanggan </th>
                             <th class="col">Menu </th>
                             <th class="col">Harga </th>
+                            <th class="col">Jumlah Pesan </th>
                             <th class="col">Total Bayar </th>
                             <th scope="col" style="width: 20%">Aksi</th>
                             </th>
@@ -194,6 +197,7 @@
                             <td>{{ $pesanan->nama_pemesan }}</td>
                             <td>{{ $pesanan->menu->nama_menu }}</td>
                             <td>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</td>
+                            <td>{{ $pesanan->jumlah_pesanan }}</td>
                             <td>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</td>
                             <td class="text-center">
                                                 <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('pesanans.destroy', $pesanan->id_pesanan) }}" method="POST">
@@ -209,7 +213,7 @@
                                         <tr>
                                             <td colspan="9" class="text-center">
                                                 <div class="alert alert-danger">
-                                                    Data pesanan belum Tersedia.
+                                                    Data pesanan belum tersedia.
                                                 </div>
                                             </td>
                                         </tr>

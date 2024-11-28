@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nama_pemesan'); // Nama Pemesan
             $table->date('tgl_pesan'); // Tanggal Pesan
             $table->decimal('total_pembayaran', 10, 2); // Total Pembayaran
-            $table->integer('jumlah_pesanan')->nullable(false);
+            $table->integer('jumlah_pesanan');
             $table->decimal('harga');
             $table->timestamps();
         });

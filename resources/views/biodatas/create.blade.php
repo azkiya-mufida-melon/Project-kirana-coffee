@@ -100,7 +100,13 @@
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-truck"></i> Pesanan</a>
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-file-alt"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
+<<<<<<< Updated upstream
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
+=======
+        <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
+        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
+>>>>>>> Stashed changes
     </div>
 
     <!-- Main Content -->
@@ -227,8 +233,8 @@
                             </div>
 
                             <!-- Buttons -->
-                            <button type="submit" class="btn btn-md btn-simpan me-3">Simpan</button>
-                            <button type="reset" class="btn btn-md btn-reset">Reset</button>
+                            <button type="submit" class="btn btn-md btn-primary me-3">SIMPAN</button>
+                            <button type="reset" class="btn btn-md btn-warning">RESET</button>
                         </form>
                     </div>
                 </div>
