@@ -55,8 +55,8 @@
         }
 
         .navbar {
-            background: #3C3D37; /* Warna navbar */
-            width: 101.7%;
+            background: #3C3D37; /* Navbar color */
+            width: 100%;
             padding: 25px;
             color: white;
             margin: 0;
@@ -127,8 +127,8 @@
             <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
             <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
             <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-            <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-            <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
+            <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+            <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -195,7 +195,7 @@
                           <tr class="text-center">
                             <td>{{ $pesanan->tgl_pesan }}</td>
                             <td>{{ $pesanan->nama_pemesan }}</td>
-                            <td>{{ $pesanan->menu->nama_menu }}</td>
+                            <td>{{ $pesanan->menu ? $pesanan->menu->nama_menu : 'Menu tidak tersedia' }}</td>
                             <td>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</td>
                             <td>{{ $pesanan->jumlah_pesanan }}</td>
                             <td>{{ "Rp " . number_format($pesanan->total_pembayaran,2,',','.') }}</td>
@@ -218,9 +218,9 @@
                                             </td>
                                         </tr>
                                     @endforelse
-                                </tbody>
-                            </table>
-                            {{ $pesanans->links() }}	
+                        </tbody>
+                    </table>
+                    {{ $pesanans->links() }}	
                   </div>
             </div>
         </div>

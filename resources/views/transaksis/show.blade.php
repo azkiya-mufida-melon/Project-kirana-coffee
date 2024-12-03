@@ -91,8 +91,8 @@
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
+        <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -128,7 +128,9 @@
                         <hr/>
                         <p>{{ $transaksi->metode_pembayaran }}</p>
                         </hr>
-                        <p>{{ $transaksi->status }}</p>
+                        <p>{{ $transaksi->status_transaksi }}</p>
+                        </hr>
+                        <p>{{ optional($transaksi->pesanan)->jumlah_pesanan ?? 'Tidak ada data pesanan' }}</p>
                         </hr>
                         <p>{{ "Rp " . number_format($transaksi->harga,2,',','.') }}</p>
                         <hr/>
@@ -163,6 +165,5 @@
             @endif
         </script>
     </div>
-
 </body>
 </html>

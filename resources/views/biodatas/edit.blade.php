@@ -92,13 +92,9 @@
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
-<<<<<<< Updated upstream
-        <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-=======
         <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
-        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
->>>>>>> Stashed changes
+        <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -208,6 +204,17 @@
                                     <option value="Koki Snack" {{ old('jabatan', $biodata->jabatan) == 'Koki Snack' ? 'selected' : '' }}>Koki Snack</option>
                                 </select>
                                 @error('jabatan')
+                                    <div class="alert alert-danger mt-2">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <!-- Lama Bekerja -->
+                            <div class="mb-3">
+                                <label for="lama_bekerja" class="form-label">Lama Bekerja</label>
+                                <input type="date" class="form-control" id="lama_bekerja" name="lama_bekerja" value="{{ old('lama_bekerja', $biodata->lama_bekerja) }}" required>
+                                @error('lama_bekerja')
                                     <div class="alert alert-danger mt-2">
                                         {{ $message }}
                                     </div>

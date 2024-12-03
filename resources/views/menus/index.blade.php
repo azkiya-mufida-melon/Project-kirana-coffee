@@ -49,7 +49,7 @@
         }
         .navbar {
             background: #3C3D37; /* Navbar color */
-            width: 101.7%;
+            width: 100%;
             padding: 25px;
             color: white;
             margin: 0;

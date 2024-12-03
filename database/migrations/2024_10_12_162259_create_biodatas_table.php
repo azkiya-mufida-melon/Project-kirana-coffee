@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('email');
             $table->enum('jabatan', ['Owner', 'Barista', 'Kasir', 'Koki Snack']);
             $table->string('foto_profil')->nullable();
+            $table->date('lama_bekerja');
             $table->timestamps();
         });
     }

@@ -93,13 +93,9 @@
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
-<<<<<<< Updated upstream
-        <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-=======
         <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
-        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
->>>>>>> Stashed changes
+        <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -149,6 +145,8 @@
                         <p>{{ $biodata->email }}</p>
                         <hr/>
                         <p>{{ $biodata->jabatan }}</p>
+                        <p>{{ \Carbon\Carbon::parse($biodata->lama_bekerja)->format('d-m-Y') }}</p>
+                        <hr/>
                     </div>
                 </div>
             </div>

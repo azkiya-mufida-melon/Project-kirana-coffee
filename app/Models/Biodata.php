@@ -21,6 +21,7 @@ class Biodata extends Model
         'email',
         'jabatan',
         'foto_profil',
+        'lama_bekerja',
     ];
 
 

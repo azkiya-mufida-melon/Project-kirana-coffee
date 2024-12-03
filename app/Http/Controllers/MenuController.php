@@ -57,7 +57,7 @@ class MenuController extends Controller
         $request->validate([
             'gambar_menu'         => 'required|image|mimes:jpeg,jpg,png|max:2048',
             'nama_menu'         => 'required|min:5',
-            'detail_menu'   => 'required|min:10',
+            'detail_menu'   => 'required',
             'harga'         => 'required|numeric',
             'stok'         => 'required|numeric'
         ]);

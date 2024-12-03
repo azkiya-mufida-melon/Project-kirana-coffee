@@ -11,16 +11,20 @@
             body {
             display: flex;
             background-color: #f8f5f0; /* Warna latar belakang */
+            margin: 0;
+            height: 100%; /* Pastikan tinggi body mencakup seluruh halaman */
+            min-height: 100vh;
         }
 
         .sidebar {
             min-width: 260px;
-            max-width: 250px;
+            max-width: 260px;
             background: #ffffff; /* Warna latar sidebar */
             color: black;
-            min-height: 150%;
+            min-height: 100%; /* Tinggi minimal menyesuaikan konten */
+            height: auto;
             padding: 20px;
-            position: relative;
+            flex-shrink: 0; /* Sidebar tidak mengecil */
         }
 
         .sidebar h2 {
@@ -55,16 +59,17 @@
         }
 
         .navbar {
-            background: #3C3D37; /* Warna navbar */
-            width: 101.7%;
+            background: #3C3D37; /* Navbar color */
+            width: 100%;
             padding: 25px;
             color: white;
             margin: 0;
         }
 
         .content {
-            flex-grow: 1;
+            flex-grow: 1; /* Mengisi ruang tersisa */
             padding: 20px;
+            overflow-x: auto; /* Agar tabel bisa di-scroll jika terlalu lebar */
         }
 
         .card {
@@ -127,8 +132,8 @@
             <a href="{{ route('transaksis.index') }}" class="{{ request()->is('transaksis*') ? 'active' : '' }}"><i class="fas fa-file-alt"></i> Transaksi</a>
             <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
             <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-            <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-            <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
+            <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+            <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -260,7 +265,8 @@
                                                 <a href="{{ route('transaksis.show', $transaksi->id_transaksi) }}" class="btn btn-sm btn-dark">LIHAT</a>
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                                <button type="submit" class="btn btn-sm btn-edit">HAPUS</button>
+                                                <a href="#" class="btn btn-sm btn-hapus" id="pay-button" data-id="{{ $transaksi->id_transaksi }}">BAYAR</a>
                                             </form>
                                         </td>
                                     </tr>
@@ -303,7 +309,54 @@
                 });
             @endif
         </script>
+        <script src="https://app.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-4FLASI-tQ8nBfz_E"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const payButton = document.querySelectorAll('#pay-button');
+        
+                payButton.forEach(function (button) {
+                    button.addEventListener('click', function (e) {
+                        e.preventDefault();
+        
+                        const transactionId = this.getAttribute('data-id');
+        
+                        // Lakukan request ke server Laravel untuk mendapatkan Snap Token
+                        fetch(`/get-snap-token/${transactionId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.snapToken) {
+                                    // Memanggil Snap Payment
+                                    window.snap.pay(data.snapToken, {
+                                        onSuccess: function (result) {
+                                            alert("Pembayaran berhasil!");
+                                            console.log(result);
+                                            // Arahkan ke halaman sukses atau refresh halaman
+                                            location.reload();
+                                        },
+                                        onPending: function (result) {
+                                            alert("Menunggu pembayaran!");
+                                            console.log(result);
+                                        },
+                                        onError: function (result) {
+                                            alert("Pembayaran gagal!");
+                                            console.log(result);
+                                        },
+                                        onClose: function () {
+                                            alert("Anda menutup popup pembayaran!");
+                                        }
+                                    });
+                                } else {
+                                    alert("Gagal mendapatkan token pembayaran!");
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                });
+            });
+        </script>
+        
     </div>
 
+    
 </body>
 </html>

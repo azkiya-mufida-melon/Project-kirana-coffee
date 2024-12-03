@@ -6,11 +6,12 @@ use App\Models\Biodata;
 
 use Illuminate\View\View;
 
-use Illuminate\Http\RedirectResponse;
-
 use Illuminate\Http\Request;
 
+use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Schema\Blueprint;
 
 class BiodataController extends Controller
 {
@@ -39,14 +40,15 @@ class BiodataController extends Controller
     {
         // Validasi form
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama'          => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-            'tgl_lahir' => 'required|date',
-            'no_telp' => 'required|string|max:15',
-            'alamat' => 'required|string',
-            'email' => 'required|email|max:255',
-            'jabatan' => 'required|in:Owner,Barista,Kasir,Koki Snack',
-            'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto profil
+            'tgl_lahir'     => 'required|date',
+            'no_telp'       => 'required|string|max:15',
+            'alamat'        => 'required|string',
+            'email'         => 'required|email|max:255',
+            'jabatan'       => 'required|in:Owner,Barista,Kasir,Koki Snack',
+            'foto_profil'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto profil
+            'lama_bekerja'  => 'required|date',
         ]);
         
         // Upload image jika ada
@@ -63,10 +65,12 @@ class BiodataController extends Controller
             'nama'            => $request->nama,
             'jenis_kelamin'   => $request->jenis_kelamin,
             'tgl_lahir'       => $request->tgl_lahir, // Perbaikan: gunakan tgl_lahir dari input
-            'no_telp'        => $request->no_telp,
+            'no_telp'         => $request->no_telp,
             'alamat'          => $request->alamat,
             'email'           => $request->email,
-            'jabatan'          => $request->jabatan,
+            'jabatan'         => $request->jabatan,
+            'lama_bekerja'    => $request->lama_bekerja,
+
         ]);
 
         // Redirect ke index
@@ -95,14 +99,15 @@ class BiodataController extends Controller
 {
     // Validasi input
     $request->validate([
-        'nama' => 'required|string|max:255',
+        'nama'          => 'required|string|max:255',
         'jenis_kelamin' => 'required|in:Laki-Laki,Perempuan',
-        'tgl_lahir' => 'required|date',
-        'no_telp' => 'required|string|max:15',
-        'alamat' => 'required|string',
-        'email' => 'required|email|max:255',
-        'jabatan' => 'required|in:Owner,Barista,Kasir,Koki Snack',
-        'foto_profil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'tgl_lahir'     => 'required|date',
+        'no_telp'       => 'required|string|max:15',
+        'alamat'        => 'required|string',
+        'email'         => 'required|email|max:255',
+        'jabatan'       => 'required|in:Owner,Barista,Kasir,Koki Snack',
+        'foto_profil'   => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'lama_bekerja'  => 'required|date',
     ]);
 
     // Temukan biodata berdasarkan ID
@@ -118,14 +123,15 @@ class BiodataController extends Controller
 
         // Update biodata dengan foto profil baru
         $biodata->update([
-            'foto_profil' => $image->hashName(),
-            'nama' => $request->nama,
+            'foto_profil'   => $image->hashName(),
+            'nama'          => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
-            'tgl_lahir' => $request->tgl_lahir,
-            'no_telp' => $request->no_telp,
-            'alamat' => $request->alamat,
-            'email' => $request->email,
-            'jabatan' => $request->jabatan,
+            'tgl_lahir'     => $request->tgl_lahir,
+            'no_telp'       => $request->no_telp,
+            'alamat'        => $request->alamat,
+            'email'         => $request->email,
+            'jabatan'       => $request->jabatan,
+            'lama_bekerja'  => $request->lama_bekerja,
         ]);
     } else {
         // Update biodata tanpa foto profil baru
@@ -149,19 +155,5 @@ class BiodataController extends Controller
         //redirect to index
         return redirect()->route('biodatas.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
-
-    public function up()
-{
-    Schema::table('biodata', function (Blueprint $table) {
-        $table->string('jabatan')->nullable(); // Menambahkan kolom jabatan dengan tipe string, bisa diisi null
-    });
-}
-
-public function down()
-{
-    Schema::table('biodata', function (Blueprint $table) {
-        $table->dropColumn('jabatan'); // Menghapus kolom jabatan jika migrasi di-rollback
-    });
-}
 
 }

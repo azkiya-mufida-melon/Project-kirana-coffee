@@ -103,13 +103,9 @@
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
         <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
-<<<<<<< Updated upstream
-        <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
-=======
         <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
-        <a href="#"><i class="fas fa-chart-line"></i> TPK</a>
-        <a href="#"><i class="fas fa-chart-line"></i> Hasil TPK</a>
->>>>>>> Stashed changes
+        <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
+        <a href="#"><i class="fas fa-chart-pie"></i> Hasil TPK</a>
     </div>
 
     <!-- Main Content -->
@@ -166,6 +162,7 @@
                                 <th scope="col">Alamat</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Jabatan</th>
+                                <th scope="col">Lama Bekerja</th>
                                 <th >Aksi</th>
                             </tr>
                         </thead>
@@ -182,6 +179,7 @@
                                     <td>{{ $biodata->alamat }}</td>
                                     <td>{{ $biodata->email }}</td>
                                     <td>{{ $biodata->jabatan }}</td>
+                                    <td>{{ $biodata->lama_bekerja }}</td>
                                     <td class="text-center">
                                         <form onsubmit="return confirm('Apakah Anda Yakin ?');" action="{{ route('biodatas.destroy', $biodata->id_biodata) }}" method="POST">
                                             <a href="{{ route('biodatas.show', $biodata->id_biodata) }}" class="btn btn-sm btn-dark">LIHAT</a>
@@ -194,7 +192,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center">
+                                    <td colspan="10" class="text-center">
                                         <div class="alert alert-danger">
                                             Data pegawai belum tersedia.
                                         </div>
