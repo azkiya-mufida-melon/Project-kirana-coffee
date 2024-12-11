@@ -113,7 +113,17 @@
             background-color: #d7ccc8; /* Warna latar hijau untuk tautan aktif */
             color: black;
         }
-
+        .dropdown-menu {
+            min-width: 110px; /* Kurangi ukuran minimum lebar */
+            max-width: 150px; /* Batasi ukuran maksimum lebar */
+            background-color: #f8f9fa; /* Warna latar dropdown */
+            padding: 5px 10px; /* Sesuaikan padding */
+            border-radius: 5px; /* Buat sudut melengkung */
+        }
+        .dropdown {
+            position: relative;
+            z-index: 1050; /* Agar dropdown tampil di atas elemen lain */
+        }
     </style>
 </head>
 <body>
@@ -123,8 +133,8 @@
         <h2>KIRANA COFFE</h2>
             <a href="#"><i class="fas fa-home"></i> Dashboard</a>
             <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
-            <a href="{{ route('pesanans.index') }}" class="{{ request()->is('pesanans*') ? 'active' : '' }}"><i class="fas fa-file-alt"></i> Pesanan</a>
-            <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
+            <a href="{{ route('pesanans.index') }}" class="{{ request()->is('pesanans*') ? 'active' : '' }}"><i class="fas fa-truck"></i> Pesanan</a>
+            <a href="{{ route('transaksis.index') }}"><i class="fas fa-file-alt"></i> Transaksi</a>
             <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
             <a href="{{ route('biodatas.index') }}"><i class="fas fa-user"></i> Biodata</a>
             <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
@@ -144,7 +154,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Log out
+                            </a>
+                            <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('absensis.index') }}">Absensi</a></li>
                     </ul>
                 </div>
             </div>
@@ -182,6 +200,7 @@
                           <tr class="headings text-center">
                             <th class="col">Tanggal </th>
                             <th class="col">Pelanggan </th>
+                            <th class="col">Pegawai</th>
                             <th class="col">Menu </th>
                             <th class="col">Harga </th>
                             <th class="col">Jumlah Pesan </th>
@@ -195,6 +214,7 @@
                           <tr class="text-center">
                             <td>{{ $pesanan->tgl_pesan }}</td>
                             <td>{{ $pesanan->nama_pemesan }}</td>
+                            <td>{{ $pesanan->user ? $pesanan->user->username : 'Tidak ada pegawai' }}</td>
                             <td>{{ $pesanan->menu ? $pesanan->menu->nama_menu : 'Menu tidak tersedia' }}</td>
                             <td>{{ "Rp " . number_format($pesanan->harga,2,',','.') }}</td>
                             <td>{{ $pesanan->jumlah_pesanan }}</td>
@@ -249,6 +269,6 @@
             @endif
         </script>
     </div>
-
+    <p class="mt-5 mb-3 text-muted">&copy; 2024 Kirana Coffee</p>
 </body>
 </html>

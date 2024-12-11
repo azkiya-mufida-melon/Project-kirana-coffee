@@ -57,4 +57,11 @@ class User extends Authenticatable
     {
         return $this->role === 'user';
     }
+
+    // Di model User
+    public function pesanans()
+    {
+        return $this->hasMany(Pesanan::class, 'username_pegawai'); // Pastikan 'user_id' sesuai dengan nama kolom di tabel pesanan
+    }
+
 }

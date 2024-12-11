@@ -81,6 +81,17 @@
         .table thead th {
             background-color: #d9d9d9;
         }
+        .dropdown-menu {
+            min-width: 110px; /* Kurangi ukuran minimum lebar */
+            max-width: 150px; /* Batasi ukuran maksimum lebar */
+            background-color: #f8f9fa; /* Warna latar dropdown */
+            padding: 5px 10px; /* Sesuaikan padding */
+            border-radius: 5px; /* Buat sudut melengkung */
+        }
+        .dropdown {
+            position: relative;
+            z-index: 1050; /* Agar dropdown tampil di atas elemen lain */
+        }
     </style>
 </head>
 <body>
@@ -89,8 +100,8 @@
     <div class="sidebar">
         <a href="#"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
-        <a href="{{ route('pesanans.index') }}"><i class="fas fa-file-alt"></i> Pesanan</a>
-        <a href="{{ route('transaksis.index') }}"><i class="fas fa-truck"></i> Transaksi</a>
+        <a href="{{ route('pesanans.index') }}"><i class="fas fa-truck"></i> Pesanan</a>
+        <a href="{{ route('transaksis.index') }}"><i class="fas fa-file-alt"></i> Transaksi</a>
         <a href="#"><i class="fas fa-chart-line"></i> Laporan</a>
         <a href="{{ route('biodatas.index') }}" class="{{ request()->is('biodatas*') ? 'active' : '' }}"><i class="fas fa-user"></i> Biodata</a>
         <a href="#"><i class="fas fa-lightbulb"></i> TPK</a>
@@ -110,7 +121,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Log out
+                            </a>
+                            <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('absensis.index') }}">Absensi</a></li>
                     </ul>
                 </div>
             </div>

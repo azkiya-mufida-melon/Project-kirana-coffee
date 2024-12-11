@@ -56,4 +56,10 @@ class PesananObserver
     {
         //
     }
+
+    public function boot(): void
+    {
+    Pesanan::observe(PesananObserver::class);
+    }
+
 }

@@ -3,12 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransaksiController;
 
 Route::get('/', function () {
     return view('welcome');
-})->middleware('auth');
+});
 
 Route::resource('/menus', \App\Http\Controllers\MenuController::class);
 
@@ -18,11 +19,14 @@ Route::resource('/pesanans', \App\Http\Controllers\PesananController::class);
 
 Route::resource('/transaksis', \App\Http\Controllers\TransaksiController::class);
 
-Route::get('/get-snap-token/{id}', [PaymentController::class, 'getSnapToken']);
+Route::get('/get-snap-token/{transaksiId}', [PaymentController::class, 'getSnapToken']);
+Route::post('/midtrans-notification', [PaymentController::class, 'notificationHandler']);
+
+Route::post('/payment/notification', [PaymentController::class, 'handleNotification']);
+Route::post('/process-payment', [PaymentController::class, 'processPayment']);
 
 // Login
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::get('login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate'])->name('auth.authenticate');
 
 // Register
@@ -31,6 +35,11 @@ Route::post('/register', [AuthController::class, 'store'])->name('auth.store');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/absensis', [AbsensiController::class, 'index'])->name('absensis.index');
+    Route::post('/absensis', [AbsensiController::class, 'store'])->name('absensis.store');
+});
 
 
 Route::middleware([RoleMiddleware::class . ':admin'])->group(function () {

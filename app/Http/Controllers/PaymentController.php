@@ -5,41 +5,47 @@ namespace App\Http\Controllers;
 use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Transaksi;
+use Midtrans\Transaction;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
-    public function getSnapToken($id)
-{
-    // Ambil detail transaksi berdasarkan ID
-    $transaksi = Transaksi::find($id);
-
-    if (!$transaksi) {
-        return response()->json(['error' => 'Transaksi tidak ditemukan'], 404);
+    public function processPayment(Request $request)
+    {
+        $transaksiId = $request->id_transaksi;
+        
+        // Proses pembayaran menggunakan Midtrans
+        try {
+            // Lakukan logika untuk memproses pembayaran, misalnya dengan Midtrans API
+            $transaksi = Transaksi::find($transaksiId);
+            
+            // Misalnya, ambil virtual account number jika berhasil
+            if ($transaksi) {
+                return response()->json([
+                    'va_numbers' => [
+                        ['va_number' => '1234567890'] // Virtual account number yang didapat dari Midtrans
+                    ]
+                ]);
+            } else {
+                return response()->json(['error' => 'Transaksi tidak ditemukan'], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
-    // Detail transaksi untuk Midtrans
-    $transactionDetails = [
-        'order_id' => 'ORDER-' . $transaksi->id_transaksi,
-        'gross_amount' => $transaksi->pesanan->total_pembayaran, // Total pembayaran
-    ];
+    public function handleNotification(Request $request)
+    {
+        $notification = $request->all();
 
-    $customerDetails = [
-        'first_name' => $transaksi->pesanan->nama_pemesan,
-        'email' => $transaksi->pesanan->email_pemesan ?? 'email@default.com',
-    ];
+        if ($notification['status_transaksi'] == 'settlement') {
+            $transaksi = Transaksi::where('id_transaksi', $notification['id_pesanan'])->first();
+            $transaksi->status_transaksi = 'bayar'; // Update status transaksi
+            $transaksi->save();
+        }
 
-    $snapParams = [
-        'transaction_details' => $transactionDetails,
-        'customer_details' => $customerDetails,
-    ];
-
-    try {
-        $snapToken = \Midtrans\Snap::getSnapToken($snapParams);
-
-        return response()->json(['snapToken' => $snapToken]);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        return response()->json(['message' => 'Notification processed'], 200);
     }
-}
+
+
 }

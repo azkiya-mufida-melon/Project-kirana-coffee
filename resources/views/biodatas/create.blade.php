@@ -89,6 +89,17 @@
             background-color: #8d6e63;
             color: white;
         }
+        .dropdown-menu {
+        min-width: 110px; /* Kurangi ukuran minimum lebar */
+        max-width: 150px; /* Batasi ukuran maksimum lebar */
+        background-color: #f8f9fa; /* Warna latar dropdown */
+        padding: 5px 10px; /* Sesuaikan padding */
+        border-radius: 5px; /* Buat sudut melengkung */
+        }
+        .dropdown {
+            position: relative;
+            z-index: 1050; /* Agar dropdown tampil di atas elemen lain */
+        }
     </style>
 </head>
 <body>
@@ -118,7 +129,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Log out
+                            </a>
+                            <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('absensis.index') }}">Absensi</a></li>
                     </ul>
                 </div>
             </div>

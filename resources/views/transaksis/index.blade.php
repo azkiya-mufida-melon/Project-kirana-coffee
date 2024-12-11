@@ -118,7 +118,17 @@
             background-color: #d7ccc8; /* Warna latar hijau untuk tautan aktif */
             color: black;
         }
-
+        .dropdown-menu {
+            min-width: 110px; /* Kurangi ukuran minimum lebar */
+            max-width: 150px; /* Batasi ukuran maksimum lebar */
+            background-color: #f8f9fa; /* Warna latar dropdown */
+            padding: 5px 10px; /* Sesuaikan padding */
+            border-radius: 5px; /* Buat sudut melengkung */
+        }
+        .dropdown {
+            position: relative;
+            z-index: 1050; /* Agar dropdown tampil di atas elemen lain */
+        }
     </style>
 </head>
 <body>
@@ -149,7 +159,15 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Log out</a></li>
+                        <li>
+                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Log out
+                            </a>
+                            <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ route('absensis.index') }}">Absensi</a></li>
                     </ul>
                 </div>
             </div>
@@ -182,6 +200,7 @@
                             </form>
                             </div>
                         <!-- Tabel Transaksi -->
+                        <!-- Tabel Transaksi -->
                         <table class="table table-bordered">
                             <thead>
                                 <tr class="headings text-center">
@@ -194,7 +213,7 @@
                                     <th class="col">Jumlah Pesanan</th>
                                     <th class="col">Metode Pembayaran</th>
                                     <th class="col">Status</th>
-                                    <th scope="col" style="width: 20%">Aksi</th>
+                                    <th scope="col" style="width: 25%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -202,37 +221,25 @@
                                     <tr class="text-center">
                                         <!-- Id Pesanan -->
                                         <td>{{ $transaksi->id_pesanan }}</td>
-                            
+
                                         <!-- Tanggal Transaksi -->
                                         <td>{{ $transaksi->tgl_transaksi }}</td>
-                            
+
                                         <!-- Nama Pemesan -->
                                         <td>{{ $transaksi->pesanan->nama_pemesan ?? 'Nama Pemesan tidak tersedia' }}</td>
-                            
+
                                         <!-- Nama Menu -->
-                                        <td>
-                                            {{ $transaksi->pesanan && $transaksi->pesanan->menu 
-                                                ? $transaksi->pesanan->menu->nama_menu 
-                                                : 'Menu tidak tersedia' }}
-                                        </td>
-                            
+                                        <td>{{ $transaksi->pesanan->menu->nama_menu ?? 'Menu tidak tersedia' }}</td>
+
                                         <!-- Harga -->
-                                        <td>
-                                            {{ $transaksi->pesanan && $transaksi->pesanan->menu 
-                                                ? 'Rp ' . number_format($transaksi->pesanan->menu->harga, 2, ',', '.') 
-                                                : 'Harga tidak tersedia' }}
-                                        </td>
-                            
+                                        <td>{{ 'Rp ' . number_format($transaksi->pesanan->menu->harga ?? 0, 2, ',', '.') }}</td>
+
                                         <!-- Total Bayar -->
-                                        <td>
-                                            {{ $transaksi->pesanan 
-                                                ? 'Rp ' . number_format($transaksi->pesanan->total_pembayaran, 2, ',', '.') 
-                                                : 'Total pembayaran tidak tersedia' }}
-                                        </td>
-                            
+                                        <td>{{ 'Rp ' . number_format($transaksi->pesanan->total_pembayaran ?? 0, 2, ',', '.') }}</td>
+
                                         <!-- Jumlah Pesanan -->
                                         <td>{{ $transaksi->pesanan->jumlah_pesanan ?? 'Jumlah tidak tersedia' }}</td>
-                            
+
                                         <!-- Metode Pembayaran -->
                                         <td>
                                             <form action="{{ route('transaksis.update', $transaksi->id_transaksi) }}" method="POST">
@@ -244,7 +251,7 @@
                                                 </select>
                                             </form>
                                         </td>
-                                                                    
+
                                         <!-- Status Transaksi -->
                                         <td>
                                             <form action="{{ route('transaksis.update', $transaksi->id_transaksi) }}" method="POST">
@@ -256,27 +263,21 @@
                                                 </select>
                                             </form>
                                         </td>
-                                                                    
+
                                         <!-- Aksi -->
-                                        <td class="text-center">
-                                            <form onsubmit="return confirm('Apakah Anda Yakin ?');" 
-                                                action="{{ route('transaksis.destroy', $transaksi->id_transaksi) }}" 
-                                                method="POST">
-                                                <a href="{{ route('transaksis.show', $transaksi->id_transaksi) }}" class="btn btn-sm btn-dark">LIHAT</a>
+                                        <td>
+                                            <button class="btn btn-sm btn-dark" id="pay-button" data-id_transaksi="{{ $transaksi->id_transaksi }}">BAYAR</button>
+                                            <a href="{{ route('transaksis.show', $transaksi->id_transaksi) }}" class="btn btn-sm btn-edit">LIHAT</a>
+                                            <form action="{{ route('transaksis.destroy', $transaksi->id_transaksi) }}" method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-edit">HAPUS</button>
-                                                <a href="#" class="btn btn-sm btn-hapus" id="pay-button" data-id="{{ $transaksi->id_transaksi }}">BAYAR</a>
+                                                <button type="submit" class="btn btn-sm btn-hapus" onclick="return confirm('Yakin ingin menghapus data ini?')">HAPUS</button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="10" class="text-center">
-                                            <div class="alert alert-danger">
-                                                Data transaksi belum tersedia.
-                                            </div>
-                                        </td>
+                                        <td colspan="10" class="text-center">Data transaksi belum tersedia.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -288,6 +289,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-4FLASI-tQ8nBfz_E"></script>
 
         <script>
             //message with sweetalert
@@ -310,53 +312,41 @@
             @endif
         </script>
         <script src="https://app.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-4FLASI-tQ8nBfz_E"></script>
+        <!-- transaksi.blade.php -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const payButton = document.querySelectorAll('#pay-button');
-        
-                payButton.forEach(function (button) {
+                const payButtons = document.querySelectorAll('.pay-button');
+
+                payButtons.forEach(function (button) {
                     button.addEventListener('click', function (e) {
                         e.preventDefault();
-        
-                        const transactionId = this.getAttribute('data-id');
-        
-                        // Lakukan request ke server Laravel untuk mendapatkan Snap Token
-                        fetch(`/get-snap-token/${transactionId}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.snapToken) {
-                                    // Memanggil Snap Payment
-                                    window.snap.pay(data.snapToken, {
-                                        onSuccess: function (result) {
-                                            alert("Pembayaran berhasil!");
-                                            console.log(result);
-                                            // Arahkan ke halaman sukses atau refresh halaman
-                                            location.reload();
-                                        },
-                                        onPending: function (result) {
-                                            alert("Menunggu pembayaran!");
-                                            console.log(result);
-                                        },
-                                        onError: function (result) {
-                                            alert("Pembayaran gagal!");
-                                            console.log(result);
-                                        },
-                                        onClose: function () {
-                                            alert("Anda menutup popup pembayaran!");
-                                        }
-                                    });
-                                } else {
-                                    alert("Gagal mendapatkan token pembayaran!");
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
+
+                        const transaksiId = this.getAttribute('data-id_transaksi'); // Ambil ID transaksi
+
+                        fetch('/process-payment', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id_transaksi: transaksiId, // ID transaksi yang dipilih
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.va_numbers) {
+                                alert(`Pembayaran berhasil! Virtual Account: ${data.va_numbers[0].va_number}`);
+                            } else {
+                                alert('Pembayaran gagal!');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
                     });
                 });
             });
         </script>
-        
+               
     </div>
-
-    
+    <p class="mt-5 mb-3 text-muted">&copy; 2024 Kirana Coffee</p>
 </body>
 </html>

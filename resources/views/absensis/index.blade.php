@@ -17,8 +17,9 @@
             max-width: 250px;
             background: #ffffff; /* Dark brown color */
             color: black;
-            height: 100vh;
+            min-height: 150%;
             padding: 20px;
+            position: relative;
         }
         .sidebar h2 {
             margin-bottom: 50px; /* Menambahkan jarak bawah */
@@ -78,6 +79,17 @@
         table th {
             background-color: #e0e0e0; /* Table header color */
         }
+        .table thead th {
+            background-color: #d9d9d9;
+        }
+        .btn-edit {
+            background-color: #6d4c41;
+            color: white;
+        }
+        .btn-hapus {
+            background-color: #8d6e63;
+            color: white;
+        }
         .dropdown-menu {
             min-width: 110px; /* Kurangi ukuran minimum lebar */
             max-width: 150px; /* Batasi ukuran maksimum lebar */
@@ -95,7 +107,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-    <h2>KIRANA COFFE</h2>
+        <h2>KIRANA COFFE</h2>
         <a href="#"><i class="fas fa-home"></i> Dashboard</a>
         <a href="{{ route('menus.index') }}"><i class="fas fa-coffee"></i> Menu</a>
         <a href="{{ route('pesanans.index') }}"><i class="fas fa-truck"></i> Pesanan</a>
@@ -132,36 +144,42 @@
                 </div>
             </div>
         </nav>
+        <div class="container mt-5">
+            <h1 class="text-center">Absensi Karyawan</h1>
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4>Halo, {{ auth()->user()->name }}</h4>
+                    <p>Tanggal: <strong>{{ now()->toDateString() }}</strong></p>
+                    @if ($absensi)
+                        <p><strong>Jam Datang:</strong> {{ $absensi->jam_datang ?? 'Belum absen' }}</p>
+                        <p><strong>Jam Pulang:</strong> {{ $absensi->jam_pulang ?? 'Belum absen' }}</p>
+                        @if ($absensi->durasi_kerja)
+                            <p><strong>Durasi Kerja:</strong> {{ $absensi->durasi_kerja }}</p>
+                        @endif
+                    @else
+                        <p><strong>Jam Datang:</strong> Belum absen</p>
+                        <p><strong>Jam Pulang:</strong> Belum absen</p>
+                    @endif
+                </div>
+            </div>
 
-        <!-- Data Menu Table -->
-        
-    <div class="container mt-5 mb-5">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded">
-                    <div class="card-body">
-                        <img src="{{ asset('/storage/menus/'.$menu->gambar_menu) }}" class="rounded" style="width: 100%">
+            <form action="{{ route('absensis.store') }}" method="POST" class="mt-4">
+                @csrf
+                @if (!$absensi || !$absensi->jam_datang)
+                    <button type="submit" name="action" value="datang" class="btn btn-success w-100">
+                        Absen Datang
+                    </button>
+                @elseif (!$absensi->jam_pulang)
+                    <button type="submit" name="action" value="pulang" class="btn btn-primary w-100">
+                        Absen Pulang
+                    </button>
+                @else
+                    <div class="alert alert-info text-center">
+                        Anda telah menyelesaikan absensi hari ini.
                     </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card border-0 shadow-sm rounded">
-                    <div class="card-body">
-                        <h3>{{ $menu->nama_menu }}</h3>
-                        <code>
-                            <p><strong>Nama Menu:</strong>{!! $menu->detail_menu !!}</p>
-                        </code>
-                        <hr/>
-                        <p><strong>Harga:</strong></p>
-                        <p>{{ "Rp " . number_format($menu->harga,2,',','.') }}</p>
-                        <hr/>
-                        <p><strong>Stok:</strong></p>
-                        <p>{{ $menu->stok }}</p>
-                    </div>
-                </div>
-            </div>
+                @endif
+            </form>
         </div>
-    </div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

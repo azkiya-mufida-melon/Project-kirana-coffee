@@ -20,6 +20,7 @@ class Pesanan extends Model
         'total_pembayaran',
         'jumlah_pesanan',
         'harga',
+        'username_pegawai',
 
     ];
 
@@ -36,6 +37,12 @@ class Pesanan extends Model
     {
     return $this->hasOne(Transaksi::class);
     }
+// Di model Pesanan
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'username_pegawai', 'username');
+    }
+
 
 }
 

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->decimal('total_pembayaran', 10, 2); // Total Pembayaran
             $table->integer('jumlah_pesanan');
             $table->decimal('harga');
+            $table->string('username_pegawai');
             $table->timestamps();
         });
     }
